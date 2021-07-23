@@ -1,3 +1,8 @@
+import pandas as pd
+import datetime
+import sqlalchemy
+import getpass
+
 class ControleFuncionariosObras():
     
     def __init__(self, con, portao):
@@ -8,7 +13,7 @@ class ControleFuncionariosObras():
     def ler_dados_sql_funcionarios(self):
         
         funcionarios = pd.read_sql(sql = 'funcionarios', con=self.con)
-        return funcionarios
+        return funcionarios.drop('senha', axis = 1)
     
     def ler_dados_sql_obras(self):
         
@@ -20,7 +25,7 @@ class ControleFuncionariosObras():
         pontos = pd.read_sql(sql = 'registro_pontos', con=self.con)
         return pontos
     
-    def cadastrar_funcionario(self, dados_funcionario = None):
+    def cadastrar_funcionario(self, dados_funcionario = None, tabela_nova = True):
         
         if(dados_funcionario != None):
             dados = dados_funcionario.copy() 
@@ -32,21 +37,26 @@ class ControleFuncionariosObras():
                 else:                    
                     dados[atributo] = input(f'inserir {atributo}: ')
         
-        
-        
-        funcionarios = self.ler_dados_sql_funcionarios()
-        
-        if(dados['cpf'] in funcionarios.cpf.to_list()):
-            print('funcionario já cadastrado anteriormente, favor inserir outro')
-            
-        else:
+        if(tabela_nova):
             dados['senha'] = self.cadastro_senha()
             df_func = pd.DataFrame(dados, index = [0])
-            df_func = pd.concat([funcionarios, df_func ], axis = 0)
-            df_func.to_sql(name = 'funcionarios', con = self.con, if_exists='replace', index = False)
+            df_func.to_sql(name = 'funcionarios', con = self.con, if_exists='append', index = False)
+            
+        else:
         
+            funcionarios = self.ler_dados_sql_funcionarios()
+            
+            if(dados['cpf'] in funcionarios.cpf.to_list()):
+                print('funcionario já cadastrado anteriormente, favor inserir outro')
+                
+            else:
+                dados['senha'] = self.cadastro_senha()
+                df_func = pd.DataFrame(dados, index = [0])
+                df_func = pd.concat([funcionarios, df_func ], axis = 0)
+                df_func.to_sql(name = 'funcionarios', con = self.con, if_exists='replace', index = False)
+            
     
-        return dados
+        
     
     def registrar_ponto(self, cpf_func, senha_func):
         
@@ -90,6 +100,8 @@ class ControleFuncionariosObras():
                                 }, index = [0])
 
                     df_ponto.to_sql('registro_pontos', con = self.con, if_exists='append', index = False)
+                    print('ponto cadastrado com sucesso !')
+
                 
                 return df_ponto
                 
@@ -97,7 +109,7 @@ class ControleFuncionariosObras():
         else:
             print('funcionario nao cadastrado!')
         
-    def cadastrar_obra(self, dados_obra = None):
+    def cadastrar_obra(self, dados_obra = None, tabela_nova = True):
         
 
         if(dados_obra != None):
@@ -110,24 +122,28 @@ class ControleFuncionariosObras():
                 dados[atributo] = input(f'inserir {atributo}: ')
         
         
-        
-        obras = self.ler_dados_sql_obras()
-        
-        
-        if((dados['numero'] in obras.numero.to_list()) and (dados['cep'] in obras.cep.to_list()) and (dados['nome'] in obras.nome.to_list())):
-            print('obra já cadastrada anteriormente, por favor inserir outra')
-            
-        else:
-            if(('id_obra' not in obras.columns) or (obras.shape[0] == 0)):
-                dados['id_obra'] = 1
-                
-            else:
-                id_ultima_obra = obras.sort_values(by = 'id_obra', ascending = False).id_obra.iloc[0]
-                dados['id_obra'] = id_ultima_obra + 1
-                
-                
+
+        if(tabela_nova):
+            dados['id_obra'] = 1
             df_obra = pd.DataFrame(dados, index = [0])
             df_obra.to_sql(name = 'obras', con = self.con, if_exists='append', index = False)
+        else:
+        
+            obras = self.ler_dados_sql_obras()
+            if((dados['numero'] in obras.numero.to_list()) and (dados['cep'] in obras.cep.to_list()) and (dados['nome'] in obras.nome.to_list())):
+                print('obra já cadastrada anteriormente, por favor inserir outra')
+                
+            else:
+                if(('id_obra' not in obras.columns) or (obras.shape[0] == 0)):
+                    dados['id_obra'] = 1
+                    
+                else:
+                    id_ultima_obra = obras.sort_values(by = 'id_obra', ascending = False).id_obra.iloc[0]
+                    dados['id_obra'] = id_ultima_obra + 1
+                    
+                    
+                df_obra = pd.DataFrame(dados, index = [0])
+                df_obra.to_sql(name = 'obras', con = self.con, if_exists='append', index = False)
 
         return dados
     
@@ -135,8 +151,8 @@ class ControleFuncionariosObras():
         senha = 0
         conf_senha = 1
         while (senha != conf_senha):
-            senha = input('inserir senha: ')
-            conf_senha = input('confirmar senha: ')
+            senha = getpass.getpass()
+            conf_senha = getpass.getpass()
         
         return senha
     

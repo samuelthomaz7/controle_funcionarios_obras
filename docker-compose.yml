@@ -1,0 +1,39 @@
+version: '3'
+
+services: 
+    sql:
+        build:
+            dockerfile: ./mysql.dockerfile
+            context: .
+        image: embarcados/sql
+        container_name: database
+        ports:
+            - "3306:3306"
+        networks: 
+            - embarcados
+        volumes: 
+            - ./sqlfiles/:/var/lib/mysql        
+
+    gestor:
+        build:
+            dockerfile: ./python_gestor.dockerfile
+            context: .
+        image: embarcados/gestor
+        container_name: gestor
+        ports:
+            - "1200:1200"
+        networks: 
+            - embarcados
+        depends_on: 
+            - 'sql'
+        volumes: 
+            - ./:/var/controle_funcionarios_obras
+        command: "tail -f /dev/null"
+        # command: "alias ll='ls -la'"
+
+
+networks:
+    embarcados:
+        driver: bridge
+
+
