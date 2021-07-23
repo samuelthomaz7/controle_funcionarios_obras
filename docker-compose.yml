@@ -29,7 +29,60 @@ services:
         volumes: 
             - ./:/var/controle_funcionarios_obras
         command: "tail -f /dev/null"
-        # command: "alias ll='ls -la'"
+
+    ponto1:
+        build:
+            dockerfile: ./python_ponto1.dockerfile
+            context: .
+        image: embarcados/ponto
+        container_name: ponto1
+        ports:
+            - "1201:1201"
+        networks: 
+            - embarcados
+        depends_on: 
+            - 'sql'
+        volumes: 
+            - ./:/var/controle_funcionarios_obras
+        command: "tail -f /dev/null"
+        environment: 
+            - ponto=1
+
+    ponto2:
+        build:
+            dockerfile: ./python_ponto2.dockerfile
+            context: .
+        image: embarcados/ponto
+        container_name: ponto2
+        ports:
+            - "1202:1202"
+        networks: 
+            - embarcados
+        depends_on: 
+            - 'sql'
+        volumes: 
+            - ./:/var/controle_funcionarios_obras
+        command: "tail -f /dev/null"
+        environment: 
+            - ponto=2
+
+    ponto3:
+        build:
+            dockerfile: ./python_ponto3.dockerfile
+            context: .
+        image: embarcados/ponto
+        container_name: ponto3
+        ports:
+            - "1203:1203"
+        networks: 
+            - embarcados
+        depends_on: 
+            - 'sql'
+        volumes: 
+            - ./:/var/controle_funcionarios_obras
+        command: "tail -f /dev/null"
+        environment: 
+            - ponto=3
 
 
 networks:

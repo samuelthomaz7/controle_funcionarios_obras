@@ -4,9 +4,10 @@ import os
 import getpass
 
 con = sqlalchemy.create_engine('mysql+pymysql://root:@database:3306/obras')
-controle = ControleFuncionariosObras(con = con, portao = 1)
+portao = int(os.environ['ponto'])
+controle = ControleFuncionariosObras(con = con, portao = portao)
 
-print('##### REGISTRO DE PONTOS #####')
+print(f'##### REGISTRO DE PONTOS PORTÃO {portao} #####')
 
 continuar = True
 
@@ -17,4 +18,3 @@ while(continuar):
     input('Aperte Enter para continuar: ')
     os.system('clear')
     
-#     input('deseja marcar')
