@@ -35,7 +35,7 @@ while(continuar):
     elif(escolha == 4):
         print(controle.cadastrar_obra(tabela_nova=False))
     elif(escolha == 5):
-        controle.cadastrar_funcionario(tabela_nova=True)
+        controle.cadastrar_funcionario(tabela_nova=False)
     elif(escolha == 6):
         continuar = False
         

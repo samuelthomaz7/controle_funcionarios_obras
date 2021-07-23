@@ -10,10 +10,16 @@ class ControleFuncionariosObras():
         self.portao = portao
         
     
-    def ler_dados_sql_funcionarios(self):
+    def ler_dados_sql_funcionarios(self, mostrar_senha = False):
         
         funcionarios = pd.read_sql(sql = 'funcionarios', con=self.con)
-        return funcionarios.drop('senha', axis = 1)
+        if(mostrar_senha):
+            return funcionarios
+        else:
+            return funcionarios.drop('senha', axis = 1)
+
+
+        
     
     def ler_dados_sql_obras(self):
         
@@ -40,11 +46,11 @@ class ControleFuncionariosObras():
         if(tabela_nova):
             dados['senha'] = self.cadastro_senha()
             df_func = pd.DataFrame(dados, index = [0])
-            df_func.to_sql(name = 'funcionarios', con = self.con, if_exists='append', index = False)
+            df_func.to_sql(name = 'funcionarios', con = self.con, if_exists='replace', index = False)
             
         else:
         
-            funcionarios = self.ler_dados_sql_funcionarios()
+            funcionarios = self.ler_dados_sql_funcionarios(mostrar_senha=True)
             
             if(dados['cpf'] in funcionarios.cpf.to_list()):
                 print('funcionario já cadastrado anteriormente, favor inserir outro')
@@ -60,7 +66,7 @@ class ControleFuncionariosObras():
     
     def registrar_ponto(self, cpf_func, senha_func):
         
-        funcionarios = self.ler_dados_sql_funcionarios()
+        funcionarios = self.ler_dados_sql_funcionarios(mostrar_senha = True)
         pontos = self.ler_dados_sql_pontos()
         
         if(cpf_func in funcionarios.cpf.to_list()):
