@@ -2,12 +2,16 @@ from classe_controle import ControleFuncionariosObras
 import sqlalchemy
 import os
 
+#cria a conexão com o SQL
 con = sqlalchemy.create_engine('mysql+pymysql://root:@database:3306/obras')
 print(con)
+#instancia a classe
 controle = ControleFuncionariosObras(con = con, portao = 1)
 
 continuar = True
 
+
+# executa o programa em si de controle do gestor da obra chamando os métodos da classe ControleFuncionariosObras
 while(continuar):
 
     print('''
