@@ -74,8 +74,8 @@ Teste 3: Banco de Dados
 ```
 > docker exec -it database bash
 > mysql
-> use obras
-> select * from funcionarios
+> use obras;
+> select * from funcionarios;
 ```
 Confirme que as informações adicionadas do novo usuário estão contidas na tabela Funcionários do banco de dados (Requisito número 3)
 ***
