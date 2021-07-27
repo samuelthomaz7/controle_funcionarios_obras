@@ -12,6 +12,8 @@ Este repositório foi desenvolvido como atividade didática para a matéria Sist
 ***
 ### Desenvolvimento
 
+![project_diagram](https://github.com/samuelthomaz7/controle_funcionarios_obras/blob/main/wiki_images/diagrama-projeto.jpeg)
+
 O projeto se divide em 3 grandes partes:
 
 1. **Banco de Dados** (Docker / MySQL): 
@@ -76,6 +78,55 @@ Teste 3: Banco de Dados
 > mysql
 > use obras;
 > select * from funcionarios;
+```
+Confirme que as informações adicionadas do novo usuário estão contidas na tabela Funcionários do banco de dados (Requisito número 3)
+***
+### Instruções para testes
+Para melhor análise, acesse cada container em uma janela de terminal diferente.
+
+No terminal
+```
+> docker-compose build
+> docker-compose up
+> docker ps
+```
+Se todos os containers configurados forem listados ao executar o último comando, podemos continuar com os testes.
+
+***
+### Teste 1: Computador do Gestor
+```
+> docker exec -it gestor bash
+> python gestor.py
+```
+1. Cadastre um funcionário
+1. Confirme que o funcionário é exibido na lista da opção "1 - Verificar Funcionários"
+1. Cadastre uma obra
+1. Confirme que o funcionário é exibido na lista da opção "2 - Verificar Obras"
+
+***
+### Teste 2: Registrar ponto
+```
+> docker exec -it ponto1 bash
+> python registro_pontos.py
+```
+```
+> docker exec -it ponto2 bash
+> python registro_pontos.py
+```
+1. Registre o ponto no portão 2 com o CPF e a senha cadastrada do novo funcionário
+1. Registre o ponto no portão 1 com os dados do mesmo funcionário
+1. No computador do gestor, escolha a opção "3 - Verificar Pontos"
+1. Confirme que o registro de entrada está relacionado com o portão 2 e o de saída com o portão 1 (Requisito número 2)
+
+*Observação - Se o relógio do Linux não estiver sincronizado com o do Windows, o horário exibido no registro de ponto será diferente do real*
+
+***
+### Teste 3: Banco de Dados
+```
+> docker exec -it database bash
+> mysql
+> use obras
+> select * from funcionarios
 ```
 Confirme que as informações adicionadas do novo usuário estão contidas na tabela Funcionários do banco de dados (Requisito número 3)
 ***
