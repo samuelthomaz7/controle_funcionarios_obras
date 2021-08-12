@@ -139,6 +139,7 @@ class ControleFuncionariosObras():
             
             if(senha != senha_func):
                 print('senha incorreta!')
+                return 1
             else:
                 pontos_funcionario = pontos.query(f"cpf == '{cpf_func}'")
                 
@@ -169,14 +170,17 @@ class ControleFuncionariosObras():
                                 }, index = [0])
 
                     df_ponto.to_sql('registro_pontos', con = self.con, if_exists='append', index = False)
-                    print('ponto cadastrado com sucesso !')
+                    # print('ponto cadastrado com sucesso !')
+                    return 0
 
                 
-                return df_ponto
+                # return df_ponto
                 
             
         else:
             print('funcionario nao cadastrado!')
+
+            return 2
         
     def cadastrar_obra(self, dados_obra = None, tabela_nova = True):
 
