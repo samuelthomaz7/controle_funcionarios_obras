@@ -20,8 +20,12 @@ O projeto se divide em 3 grandes partes:
 Um container com banco de dados SQl que contém a Tabela de Funcionários, a Tabela de Obras e a Tabela de Pontos do Funcionário. Pode ser usado na nuvem ou em um servidor local. *Observação - Neste trabalho utilizamos o docker para simular um computador, pois o período de testes da ferramenta de banco de dados online FreeSQL expirou antes da conclusão do projeto.*
 1. **Computador do Gestor** (Docker / Python / Pandas / SQLA):
 	Um container com Python 3.8 e as bibliotecas necessárias para o programa principal de controle das obras e cadastro de funcionários. O computador do gestor tem controle sobre as tabelas do banco de dados, sendo possível visualizar e editar as obras em andamento, funcionários cadastrados, registro de ponto e portão de acesso utilizado.
-1. **Sistemas Embarcados** (Docker / Python / Pandas / SQLA):
-	Três containers com Python 3.8 e as bibliotecas necessárias para simular o Portão de Entrada 1, o Portão de Entrada 2 e o Portão de Entrada 3. Para cada novo portão, um container é preciso para simular o sistema embarcado.
+1. **Sistemas Embarcados** (Python):
+	Para a simulação da estrutura real proposta (uma obra com diversas entradas), containers com Python 3.8 e as bibliotecas necessárias para simular os portões (1, 2 e 3) foram criados. Para cada novo portão, um container é preciso para simular o sistema embarcado.
+
+	Para a aplicação real, no entanto, o Docker não é necessário. Apenas o código python 'script_embarcado.py' deve ser embarcado, necessitando apenas a instalação das dependências. O script enviará via conexão TCP (como indicado no script) as informações cadastradas pelo usuário em um microcontrolador de escolha rodando python. 
+
+	O Docker NÃO deve ser embarcado, foi utilizado apenas para simular a solução de várias placas conectadas em rede e a troca de mensagens.
 ***
 ### Informações
 	
@@ -107,11 +111,11 @@ Se todos os containers configurados forem listados ao executar o último comando
 ### Teste 2: Registrar ponto
 ```
 > docker exec -it ponto1 bash
-> python registro_pontos.py
+> python script_embarcado.py
 ```
 ```
 > docker exec -it ponto2 bash
-> python registro_pontos.py
+> python script_embarcado.py
 ```
 1. Registre o ponto no portão 2 com o CPF e a senha cadastrada do novo funcionário
 1. Registre o ponto no portão 1 com os dados do mesmo funcionário
