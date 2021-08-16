@@ -43,9 +43,9 @@ No arquivo *docker-compose.yml* temos 5 containers mapeados (banco de dados, com
 |---|---|---|
 | database | Parte 1 - banco de dados | mysql |
 | gestor | Parte 2 - computador do gestor | gestor.py|
-| ponto1 | Parte 3 - portão de acesso número 1| registro_pontos.py|
-| ponto2 | Parte 3 - portão de acesso número 2| registro_pontos.py|
-| ponto3 | Parte 3 - portão de acesso número 3| registro_pontos.py|
+| ponto1 | Parte 3 - portão de acesso número 1| script_embarcado.py|
+| ponto2 | Parte 3 - portão de acesso número 2| script_embarcado.py|
+| ponto3 | Parte 3 - portão de acesso número 3| script_embarcado.py|
 ***
 ### Testes
 Teste 1: Computador do Gestor
