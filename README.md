@@ -60,13 +60,16 @@ Teste 1: Computador do Gestor
 
 ***
 Teste 2: Registrar ponto
+
+No container do gestor executar o script_host.py para esperar dados do sistema embarcado via TCP, depois devemos executar o script_embarcado.py no container do sistema embarcado:
+
 ```
 > docker exec -it ponto1 bash
-> python registro_pontos.py
+> python script_embarcado.py
 ```
 ```
 > docker exec -it ponto2 bash
-> python registro_pontos.py
+> python script_embarcado.py
 ```
 1. Registre o ponto no portão 2 com o CPF e a senha cadastrada do novo funcionário
 1. Registre o ponto no portão 1 com os dados do mesmo funcionário
