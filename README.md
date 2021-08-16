@@ -42,7 +42,7 @@ No arquivo *docker-compose.yml* temos 5 containers mapeados (banco de dados, com
 | Nome do Container| Conteúdo | Arquivo Python / Comando|
 |---|---|---|
 | database | Parte 1 - banco de dados | mysql |
-| gestor | Parte 2 - computador do gestor | gestor.py|
+| gestor | Parte 2 - computador do gestor | gestor.py/script_host.py|
 | ponto1 | Parte 3 - portão de acesso número 1| script_embarcado.py|
 | ponto2 | Parte 3 - portão de acesso número 2| script_embarcado.py|
 | ponto3 | Parte 3 - portão de acesso número 3| script_embarcado.py|
